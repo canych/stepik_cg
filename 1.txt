@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="200">
+    <rect x="0" y="20" height="160" width="1440" fill="rgba(222,222,222,0.5)" />
+    <rect x="51" y="1" height="180" width="180" fill="tomato" stroke="grey" stroke-dasharray="10 5" stroke-width="2" opacity="0.75" />
+	<circle cx="359" cy="91" r="90"  fill="lightblue" stroke="grey" stroke-dasharray="10 5" stroke-width="2" opacity="0.75" />
+	<polygon points="160,199  250,43  340,199" fill="lightgreen" stroke="darkgrey" stroke-width="4" opacity="0.75" />
+</svg>
+
+ffmpeg -i in.mp4 -ss 00:00:30 -t -c copy cropped.mp4
+convert plate.svg -depth 8 -background transparent -resize 50% plate.png
+ffmpeg -i cropped.mp4 -i plate.png -filter_complex "[0:v][1:v] overlay=0:446:enable='brtween(t,1,9)'" -c:a copy plated.mp4
+ffmpeg -i plated.mp4 -vf drawtext="fontfile=Arial.ttf: fontcolor=white: fontsize=24: x=200: y=476: text='Тратата'" -c:a copy result.mp4
